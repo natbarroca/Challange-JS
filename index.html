@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8">
+    <title>Agencia E-Plus</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <link type="text/css" media="all" href="asset/css/style.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <link rel="shortcut icon" type="image/x-icon" href="asset/image/favicon.ico"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <script type="text/javascript">
+
+        var xhr = new XMLHttpRequest();
+        var url = "products.json";
+
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200) { 
+                var jsonData = JSON.parse(xhr.responseText);
+                addItemToCart(jsonData);
+            }
+        };
+
+        xhr.open("GET", url, true);
+        xhr.send();
+
+        function addItemToCart(data) {
+            var output = "";
+            var outputTotal = "";
+            var i;
+            var total = 0;
+            var name;
+            for (var i in data.cart.item) {
+                if(data.cart.item[i].available){
+                    total += data.cart.item[i].bestPrice / 100;
+
+                    name = ((data.cart.item[i].name.length > 28) ? data.cart.item[i].name.substring(0, 28) + "..." : data.cart.item[i].name);
+
+                    output += "<div class='icons-header__cart--product__item'><div class='photo'><img src='asset" + data.cart.item[i].image + 
+                    "' alt='" + name + "' /></div><div class='desc'><p class='name'>"+  name
+                    + "</p><p class='quant'>Qtd.: " + data.cart.item[i].quantity + "</p><p class='price'>" + data.cart.item[i].bestPriceFormated + "</p></div></div>"
+                }
+            }
+            document.getElementById("items-cart").innerHTML = output;
+
+            if( total > 0){ 
+                outputTotal = "";
+                document.getElementById("items-cart-total").innerHTML = "<p>Total do pedido: <b>R$: " + total.toLocaleString('pt-BR') + "</b></p>";
+            }
+    }
+        
+        </script>
+  </head> 
+  <body>
+    <header>
+        <div class="content">
+            <a class="logo" href="/index.html">
+                <img src="asset/images/logo.png" title="Agencia E-Plus" alt="Agencia E-Plus" /> 
+            </a>
+            <nav class="menu">
+                <a class="menu__link" href="#">Lorem ipsum</a>
+                <a class="menu__link" href="#">Lorem ipsum</a>
+                <a class="menu__link" href="#">Lorem ipsum</a>
+                <a class="menu__link" href="#">Lorem ipsum</a>
+                <a class="menu__link" href="#">Lorem ipsum</a>
+            </nav>
+            <div class="icons-header">
+                <div class="icons-header__menu">
+                    <a href="#">
+                        <i class="material-icons">menu</i>
+                    </a>
+                </div>
+                <div class="icons-header__search">
+                    <a href="#">
+                        <i class="material-icons">search</i>
+                    </a>
+                </div>
+                <div class="icons-header__account">
+                    <a href="#"><i class="material-icons">person</i></a>
+                </div>
+                <div class="icons-header__cart"> 
+                    <a class="icons-header__cart__a" href="#"><i class="material-icons">shopping_cart</i></a>
+                    <div class="icons-header__cart--product">
+                        <div id="items-cart"></div>                    
+                        <div id="items-cart-total" class="icons-header__cart--product__total"></div>
+                        <div class="icons-header__cart--product__buy">
+                            <a href="#">Finalizar Compra</a>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </header>
+    <main>
+    </main>
+    <footer>
+    </footer>
+  </body>
+</html>
